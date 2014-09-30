@@ -226,6 +226,9 @@ func ParseMarshaledCmd(b []byte) (Cmd, error) {
 	case "gettransaction":
 		cmd = new(GetTransactionCmd)
 
+  case "gettransaction_MP":
+    cmd = new(GetTransactionCmd)
+
 	case "gettxout":
 		cmd = new(GetTxOutCmd)
 
