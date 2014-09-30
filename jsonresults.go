@@ -191,6 +191,19 @@ type GetTransactionResult struct {
 	Hex             string                        `json:"hex"`
 }
 
+type GetTransactionMPResult struct {
+  Amount          float64                       `json:"amount"`
+  Fee             float64                       `json:"fee,omitempty"`
+  Currency        int64                         `json:"currency"`
+  Confirmations   int64                         `json:"confirmations"`
+  Divisible       bool                          `json:"divisible"`
+  BlockIndex      int64                         `json:"blockindex"`
+  BlockTime       int64                         `json:"blocktime"`
+  TxID            string                        `json:"txid"`
+  TxType          string                        `json:"type"`
+  Valid           bool                          `json:"valid"`
+}
+
 // GetTxOutResult models the data from the gettxout command.
 type GetTxOutResult struct {
 	BestBlock     string             `json:"bestblock"`
@@ -608,6 +621,12 @@ func ReadResultCmd(cmd string, message []byte) (Reply, error) {
 		if err == nil {
 			result.Result = res
 		}
+  case "gettransaction_MP":
+    var res *GetTransactionMPResult
+    err = json.Unmarshal(objmap["result"], &res)
+    if err == nil {
+      result.Result = res
+    }
 	case "gettxout":
 		var res *GetTxOutResult
 		err = json.Unmarshal(objmap["result"], &res)

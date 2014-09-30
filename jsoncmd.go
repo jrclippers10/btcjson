@@ -227,7 +227,7 @@ func ParseMarshaledCmd(b []byte) (Cmd, error) {
 		cmd = new(GetTransactionCmd)
 
   case "gettransaction_MP":
-    cmd = new(GetTransactionCmd)
+    cmd = new(GetTransactionMPCmd)
 
 	case "gettxout":
 		cmd = new(GetTxOutCmd)
@@ -3518,6 +3518,77 @@ func (cmd *GetTransactionCmd) UnmarshalJSON(b []byte) error {
 	*cmd = *newCmd
 	return nil
 }
+
+
+// GetTransactionMPCmd is a type handling custom marshaling and
+// unmarshaling of gettransaction_MP JSON RPC commands.
+type GetTransactionMPCmd struct {
+  id   interface{}
+  Txid string
+}
+
+// Enforce that GetTransactionMPCmd satisifies the Cmd interface.
+var _ Cmd = &GetTransactionMPCmd{}
+
+// NewGetTransactionMPCmd creates a new GetTransactionMPCmd.
+func NewGetTransactionMPCmd(id interface{}, txid string) (*GetTransactionMPCmd, error) {
+  return &GetTransactionMPCmd{
+    id:   id,
+    Txid: txid,
+  }, nil
+}
+
+// Id satisfies the Cmd interface by returning the id of the command.
+func (cmd *GetTransactionMPCmd) Id() interface{} {
+  return cmd.id
+}
+
+// Method satisfies the Cmd interface by returning the json method.
+func (cmd *GetTransactionMPCmd) Method() string {
+  return "gettransaction_MP"
+}
+
+// MarshalJSON returns the JSON encoding of cmd.  Part of the Cmd interface.
+func (cmd *GetTransactionMPCmd) MarshalJSON() ([]byte, error) {
+  params := []interface{}{
+    cmd.Txid,
+  }
+
+  // Fill and marshal a RawCmd.
+  raw, err := NewRawCmd(cmd.id, cmd.Method(), params)
+  if err != nil {
+    return nil, err
+  }
+  return json.Marshal(raw)
+}
+
+// UnmarshalJSON unmarshals the JSON encoding of cmd into cmd.  Part of
+// the Cmd interface.
+func (cmd *GetTransactionMPCmd) UnmarshalJSON(b []byte) error {
+  // Unmashal into a RawCmd
+  var r RawCmd
+  if err := json.Unmarshal(b, &r); err != nil {
+    return err
+  }
+
+  if len(r.Params) != 1 {
+    return ErrWrongNumberOfParams
+  }
+
+  var txid string
+  if err := json.Unmarshal(r.Params[0], &txid); err != nil {
+    return fmt.Errorf("first parameter 'txid' must be a string: %v", err)
+  }
+
+  newCmd, err := NewGetTransactionMPCmd(r.Id, txid)
+  if err != nil {
+    return err
+  }
+
+  *cmd = *newCmd
+  return nil
+}
+
 
 // GetTxOutCmd is a type handling custom marshaling and
 // unmarshaling of gettxout JSON RPC commands.
