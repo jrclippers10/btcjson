@@ -191,17 +191,20 @@ type GetTransactionResult struct {
 	Hex             string                        `json:"hex"`
 }
 
+// GetTransactionMPResult models the data from the gettransaction_MP command.
 type GetTransactionMPResult struct {
-  Amount          float64                       `json:"amount"`
-  Fee             float64                       `json:"fee,omitempty"`
-  Currency        int64                         `json:"currency"`
-  Confirmations   int64                         `json:"confirmations"`
-  Divisible       bool                          `json:"divisible"`
-  BlockIndex      int64                         `json:"blockindex"`
-  BlockTime       int64                         `json:"blocktime"`
-  TxID            string                        `json:"txid"`
-  TxType          string                        `json:"type"`
-  Valid           bool                          `json:"valid"`
+  Amount           float64                       `json:"amount"`
+  Fee              float64                       `json:"fee,omitempty"`
+  Currency         int64                         `json:"currency"`
+  Confirmations    int64                         `json:"confirmations"`
+  Divisible        bool                          `json:"divisible"`
+  BlockIndex       int64                         `json:"blockindex"`
+  BlockTime        int64                         `json:"blocktime"`
+  SendindAddress   string                        `json:"sendingaddress"`
+  ReferenceAddress string                        `json:"referenceaddress"`
+  TxID             string                        `json:"txid"`
+  TxType           string                        `json:"type"`
+  Valid            bool                          `json:"valid"`
 }
 
 // GetTxOutResult models the data from the gettxout command.
