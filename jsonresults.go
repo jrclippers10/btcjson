@@ -193,12 +193,11 @@ type GetTransactionResult struct {
 
 // GetTransactionMPResult models the data from the gettransaction_MP command.
 type GetTransactionMPResult struct {
-  Amount           float64                       `json:"amount"`
+  Amount           string                        `json:"amount"`
   Fee              float64                       `json:"fee,omitempty"`
-  Currency         int64                         `json:"currency"`
+  PropertyID       int64                         `json:"propertyid"`
   Confirmations    int64                         `json:"confirmations"`
   Divisible        bool                          `json:"divisible"`
-  BlockIndex       int64                         `json:"blockindex"`
   BlockTime        int64                         `json:"blocktime"`
   SendindAddress   string                        `json:"sendingaddress"`
   ReferenceAddress string                        `json:"referenceaddress"`
